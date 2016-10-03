@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/DZIEN"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_weight="0.7"
+        android:textStyle="bold"
+        android:background="@color/tło"
+        android:textColor="@color/jasnyPismo"
+        android:textSize="15dp"
+        android:layout_gravity="center_vertical"/>
+    <TextView
+        android:id="@+id/DO"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:background="@color/tło"
+        android:textColor="@color/jasnyPismo"
+        android:textSize="15dp"
+        />
+    <TextView
+
+        android:id="@+id/OD"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:background="@color/tło"
+        android:textColor="@color/jasnyPismo"
+        android:textSize="15dp"/>
+
+
+    <TextView
+        android:id="@+id/GODZINY"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:background="@color/tło"
+        android:textColor="@color/jasnyPismo"
+        android:textStyle="bold"
+        android:gravity="right"
+        android:textSize="15dp"/>
+
+
+
+
+</LinearLayout>
