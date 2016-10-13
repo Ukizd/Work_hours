@@ -17,6 +17,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    packagingOptions{
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+
+    }
 }
 
 dependencies {
@@ -29,5 +37,6 @@ dependencies {
     compile 'com.firebase:firebase-client-android:2.5.2'
 
     compile 'com.google.android.gms:play-services-appindexing:9.4.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha1'
 }
 apply plugin: 'com.google.gms.google-services'

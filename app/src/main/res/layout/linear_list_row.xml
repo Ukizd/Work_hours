@@ -10,7 +10,8 @@
         android:layout_margin="10dp"
         android:background="@color/tło"
         android:textColor="@color/jasnyPismo"
-        android:id="@+id/textViewLogin"/>
+        android:id="@+id/textViewLogin"
+        android:textSize="18dp"/>
 
 
 

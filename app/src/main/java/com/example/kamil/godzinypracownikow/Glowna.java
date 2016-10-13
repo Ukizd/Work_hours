@@ -1,5 +1,7 @@
 package com.example.kamil.godzinypracownikow;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -16,7 +19,9 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 public class Glowna extends AppCompatActivity {
@@ -42,14 +47,56 @@ public class Glowna extends AppCompatActivity {
     public String iloscgGodzin;
 
 
+    static final int DATE_DIALOG_ID = 1;
+    private int mYear;
+    private int mMonth;
+    private int mDay;
+    private Button etPickADate;
+
+    private String localYear;
+    private String monthString;
+
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+            case DATE_DIALOG_ID:
+   /*
+    * return new DatePickerDialog(this, mDateSetListner, mYear, mMonth,
+    * mDay);
+    */
+                DatePickerDialog datePickerDialog = this.customDatePicker();
+                return datePickerDialog;
+        }
+        return null;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_glowna);
         Firebase.setAndroidContext(this);
         firebaseAuth = FirebaseAuth.getInstance();
-
         firebase = new Firebase(URL);
+
+        etPickADate = (Button) findViewById(R.id.et_datePicker);
+        etPickADate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog(DATE_DIALOG_ID);
+            }
+        });
+
+        final Calendar c = Calendar.getInstance();
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+
+
+
+
+
+
+
         pracownicy = new ArrayList<>();
 
 
@@ -68,6 +115,59 @@ public class Glowna extends AppCompatActivity {
 
         retrieveData();
     }
+    DatePickerDialog.OnDateSetListener mDateSetListner = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            mYear = year;
+            mMonth = monthOfYear;
+            mDay = dayOfMonth;
+            updateDate();
+
+        }
+    };
+
+
+
+    protected void updateDate() {
+        int localMonth = (mMonth + 1);
+        monthString = localMonth < 10 ? "0" + localMonth : Integer
+                .toString(localMonth);
+        localYear = Integer.toString(mYear);
+        etPickADate.setText(monthString +"/"+ localYear);
+        showDialog(DATE_DIALOG_ID);
+    }
+
+    private DatePickerDialog customDatePicker() {
+        DatePickerDialog dpd = new DatePickerDialog(this, mDateSetListner,
+                mYear, mMonth, mDay);
+        try {
+
+            Field[] datePickerDialogFields = dpd.getClass().getDeclaredFields();
+            for (Field datePickerDialogField : datePickerDialogFields) {
+                if (datePickerDialogField.getName().equals("mDatePicker")) {
+                    datePickerDialogField.setAccessible(true);
+                    DatePicker datePicker = (DatePicker) datePickerDialogField
+                            .get(dpd);
+                    Field datePickerFields[] = datePickerDialogField.getType()
+                            .getDeclaredFields();
+                    for (Field datePickerField : datePickerFields) {
+                        if ("mDayPicker".equals(datePickerField.getName())
+                                || "mDaySpinner".equals(datePickerField
+                                .getName())) {
+                            datePickerField.setAccessible(true);
+                            Object dayPicker = new Object();
+                            dayPicker = datePickerField.get(datePicker);
+                            ((View) dayPicker).setVisibility(View.GONE);
+                        }
+                    }
+                }
+
+            }
+        } catch (Exception ex) {
+        }
+        return dpd;
+    }
+
 
 
 
@@ -169,6 +269,8 @@ public class Glowna extends AppCompatActivity {
                     i.putExtra("Mapa", pracownicy.get(position).getGetDniAndGodziny());
                     i.putExtra("DrugaMapa", pracownicy.get(position).getHashMapGODZINYOD());
                     i.putExtra("TrzeciaMapa", pracownicy.get(position).getHashMapGODZINYDO());
+                    i.putExtra("Miesiac", monthString);
+                    i.putExtra("Rok", mYear);
                     Log.d(APP, "Jestem w listenerze ListView+ " + pracownicy.get(position).getGetDniAndGodziny().size());
                     Log.d(APP, "Jestem w listenerze ListView+  ODDDDDDD" + pracownicy.get(position).getHashMapGODZINYOD().size());
                     Log.d(APP, "Jestem w listenerze ListView+  DOOOOOOO" + pracownicy.get(position).getHashMapGODZINYDO().size());

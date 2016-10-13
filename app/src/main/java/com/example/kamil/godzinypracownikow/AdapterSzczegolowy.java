@@ -16,7 +16,7 @@ import java.util.HashMap;
 public class AdapterSzczegolowy extends BaseAdapter {
 
 
-    public static final String FIRST_COLUMN="First";
+    private static final String FIRST_COLUMN="First";
     public static final String SECOND_COLUMN="Second";
     public static final String THIRD_COLUMN="Third";
     public static final String FOURTH_COLUMN ="Fourth";
@@ -29,8 +29,15 @@ public class AdapterSzczegolowy extends BaseAdapter {
     TextView godziny;
 
 
+    private class ViewHolder {
+        TextView dzien;
+        TextView OD;
+        TextView DO;
+        TextView godziny;
+    }
 
-    public AdapterSzczegolowy(Activity activity,ArrayList<HashMap<String, String>> list){
+
+    public AdapterSzczegolowy(Activity activity, ArrayList<HashMap<String, String>> list){
         super();
         this.activity=activity;
         this.list=list;
@@ -53,28 +60,33 @@ public class AdapterSzczegolowy extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-
+        ViewHolder holder = null;
         LayoutInflater inflater = activity.getLayoutInflater();
 
         if(convertView == null){
 
             convertView=inflater.inflate(R.layout.colmn_row, null);
+            holder = new ViewHolder();
+            holder.dzien=(TextView) convertView.findViewById(R.id.DZIEN);
+            holder.godziny=(TextView) convertView.findViewById(R.id.GODZINY);
+            holder.OD=(TextView) convertView.findViewById(R.id.OD);
+            holder.DO=(TextView) convertView.findViewById(R.id.DO);
 
-            dzien=(TextView) convertView.findViewById(R.id.DZIEN);
-            godziny=(TextView) convertView.findViewById(R.id.GODZINY);
-            OD=(TextView) convertView.findViewById(R.id.OD);
-            DO=(TextView) convertView.findViewById(R.id.DO);
+            convertView.setTag(holder);
 
 
 
 
         }
+        else {
+            holder = (ViewHolder) convertView.getTag();
+        }
 
-        HashMap<String, String> map=list.get(position);
-        dzien.setText(map.get(FIRST_COLUMN));
-        OD.setText(map.get(THIRD_COLUMN));
-        DO.setText(map.get(SECOND_COLUMN));
-        godziny.setText(map.get(FOURTH_COLUMN));
+        HashMap<String, String> map=this.list.get(position);
+        holder.dzien.setText(map.get(FIRST_COLUMN));
+        holder.OD.setText(map.get(THIRD_COLUMN));
+        holder.DO.setText(map.get(SECOND_COLUMN));
+        holder.godziny.setText(map.get(FOURTH_COLUMN));
 
         //value++;
         //Log.d("VALUSE", value + " valuse       adsfsdfasdfasdfasdf");
