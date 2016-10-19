@@ -1,8 +1,8 @@
 package com.example.kamil.godzinypracownikow;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-public class SzczegolowyWidok extends AppCompatActivity {
+public class SzczegolowyWidok extends Activity {
 
 
     public static final String FIRST_COLUMN="First";

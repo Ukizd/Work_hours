@@ -19,7 +19,9 @@
         </activity>
         <activity android:name=".SeconLogin" />
         <activity android:name=".Glowna" />
-        <activity android:name=".SzczegolowyWidok"></activity>
+        <activity android:name=".SzczegolowyWidok" />
+        <activity android:name=".Tab1" />
+        <activity android:name=".Tab2"></activity>
     </application>
 
 </manifest>
